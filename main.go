@@ -27,6 +27,9 @@ Loop:
 		}
 
 		switch {
+		case arg == "__complete" || arg == "__completeNoDesc":
+			break Loop
+
 		case arg == "--help" || arg == "-h":
 			displayHelp = true
 			continue
