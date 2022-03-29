@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "benchmark": "./support/benchmark.sh",
+    "echo-example": "echo hello world"
+  }
+}
