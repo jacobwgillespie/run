@@ -1,6 +1,6 @@
 # 🦊 run
 
-A small utility for running `package.json` scripts and npm modules. `run` is written in Go and executes scripts faster than `npm`, `yarn`, or `pnpm` since it can skip the Node.js startup time.
+A small utility for running `package.json` scripts and npm modules. `run` is written in Go and executes scripts faster than `npm`, `yarn`, or `pnpm` since it can skip the Node.js startup time. Additionally `run` supports dynamic shell completion that suggests available script names as completions.
 
 ### Installation
 
