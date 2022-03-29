@@ -1,0 +1,51 @@
+project_name: run
+
+release:
+  prerelease: auto
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - binary: bin/run
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+    id: macos
+    goos: [darwin, linux, windows]
+
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
+changelog:
+  skip: true
+
+brews:
+  - tap:
+      owner: jacobwgillespie
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: Jacob Gillespie
+      email: jacobwgillespie@gmail.com
+    homepage: https://github.com/jacobwgillespie/run
+    description: Run is a tool for running package.json scripts
+    license: MIT
+    skip_upload: auto
+    install: |
+      bin.install "bin/run"
+      bash_comp = Utils.safe_popen_read("#{bin}/run", "--completion", "bash")
+      fish_comp = Utils.safe_popen_read("#{bin}/run", "--completion", "fish")
+      zsh_comp = Utils.safe_popen_read("#{bin}/run", "--completion", "zsh")
+      (bash_completion/"run").write bash_comp
+      (fish_completion/"run.fish").write fish_comp
+      (zsh_completion/"_run").write zsh_comp
+    test: |
+      system "#{bin}/run --help"
