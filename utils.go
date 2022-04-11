@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"golang.org/x/exp/maps"
@@ -62,9 +63,36 @@ func listScripts() []string {
 		return empty
 	}
 	if pkg.Scripts == nil {
-		return empty
+		pkg.Scripts = &map[string]string{}
 	}
-	return maps.Keys(*pkg.Scripts)
+
+	// Add all executibles to the script list
+	binDirs := findBinDirs(cwd)
+	for _, dir := range binDirs {
+		files, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, file := range files {
+			if file.IsDir() {
+				continue
+			}
+			if _, ok := (*pkg.Scripts)[file.Name()]; ok {
+				continue
+			}
+			info, err := os.Stat(filepath.Join(dir, file.Name()))
+			if err != nil {
+				continue
+			}
+			if info.Mode()&0111 != 0 {
+				(*pkg.Scripts)[file.Name()] = ""
+			}
+		}
+	}
+
+	scripts := maps.Keys(*pkg.Scripts)
+	sort.Strings(scripts)
+	return scripts
 }
 
 func resolveBinary(name string, binDirs []string) (string, error) {
