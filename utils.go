@@ -39,6 +39,11 @@ func runScript(name string, args []string) error {
 	env := os.Environ()
 	env = append(env, fmt.Sprintf("PATH=%s:%s", strings.Join(binDirs, ":"), os.Getenv("PATH")))
 
+	if ok {
+		env = append(env, fmt.Sprintf("npm_lifecycle_event=%s", name))
+		env = append(env, fmt.Sprintf("npm_lifecycle_script=%s", name))
+	}
+
 	commandArgs := strings.Join(append([]string{script}, args...), " ")
 
 	fmt.Printf("%s %s\n", green.Render("$"), gray.Render(name))
