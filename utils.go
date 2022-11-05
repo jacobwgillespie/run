@@ -23,7 +23,7 @@ func runScript(name string, args []string) error {
 	}
 
 	if pkg.Scripts == nil {
-		return fmt.Errorf("No scripts found")
+		pkg.Scripts = &map[string]string{}
 	}
 
 	binDirs := findBinDirs(cwd)
