@@ -15,19 +15,11 @@ builds:
       - -s -w
     goos: [darwin, linux, windows]
 
-archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
-
 changelog:
   skip: true
 
 brews:
-  - tap:
+  - repository:
       owner: jacobwgillespie
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
