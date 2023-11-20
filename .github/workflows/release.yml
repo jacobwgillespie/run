@@ -16,7 +16,7 @@ jobs:
       - name: Compute tag name
         id: tag-name
         run: echo "::set-output name=tag-name::${GITHUB_REF#refs/tags/}"
-      - uses: goreleaser/goreleaser-action@v4
+      - uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
           args: release --parallelism 2
